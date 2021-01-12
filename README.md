@@ -6,7 +6,7 @@ SOON
 ## Encrypting and security
 Now I'm using AES 128, maybe I'm improve security later.
 ## Features
--So secure
+- So secure
 - Very anonymously
 - Much private
 - DESIGNED AND CODED IN RUSSIA🇷🇺
