@@ -11,8 +11,9 @@ Now I'm using AES 128, maybe I'm improve security later.
 - Much private
 - DESIGNED AND CODED IN RUSSIA🇷🇺
 ## TODO
--Nodes (I'm write in readme about it)
--Mobile app (Android)
+- Nodes (I'm write in readme about it)
+- Mobile app (Android)
+- QT interface (Maybe or not)
 ## Run
 1. server.py
 2. client.py 2
