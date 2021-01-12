@@ -7,10 +7,10 @@ SOON
 Now I'm using AES 128, maybe I'm improve security later.
 ## Features
 -So secure
--Very anonymously
--Much private
--DESIGNED AND CODED IN RUSSIA🇷🇺
-##TODO
+- Very anonymously
+- Much private
+- DESIGNED AND CODED IN RUSSIA🇷🇺
+## TODO
 -Nodes (I'm write in readme about it)
 -Mobile app (Android)
 ## Run
