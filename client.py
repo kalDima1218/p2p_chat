@@ -1,64 +1,105 @@
 import socket 
 import threading
 import pickle
+from aes import encrypting, decrypting
+from netifaces import interfaces, ifaddresses, AF_INET
+
 tLock = threading.Lock()
-shutdown = False
-def receving(name, sock):
+def receving(key, sock):
+    data = ' '
     try:
-        while True:
+        while True and data != '':
             data, addr = sock.recvfrom(1024)
-            print ('\nNew message: '+ str(data.decode()))
+            print ('New message: '+ decrypting(data, key))
     except:
         pass
-s = socket.socket() 
-host = '46.229.212.108'
-port = 54320
 
-if input("First or second: ") == "1":
-    s.connect((host,port))
-    arr = ("client_1", "reg", "1024")
-    s.send(pickle.dumps(arr))
-    data, addr = s.recvfrom(1024)
+def client_connecting(ip, port):
+    key = "paymerespect"
+    s = socket.socket() 
+    s.connect(('SE.RV.ER.IP', 54320))
+    name = input("Enter your name: ")
+    s.send(pickle.dumps((name, "reg", str(port))))
     s.close()
     
     s = socket.socket() 
-    s.connect((host,port))
-    arr = ("client_2", "get")
-    s.send(pickle.dumps(arr))
+    s.connect(('SE.RV.ER.IP', 54320))
+    client = input("Enter client name: ")
+    s.send(pickle.dumps((client, "get")))
     geted, addr = s.recvfrom(1024)
     con = pickle.loads(geted)
-    print(con)
     s.close()
     
     s = socket.socket() 
-    s.connect((con))
+    s.connect(con)
     
-    rT = threading.Thread(target=receving, args=("RecvThread",s))
+    rT = threading.Thread(target=receving, args=(key, s))
     rT.start()
     
-    mes = input("-> ")
-    while mes != "Quite":
-        s.send(mes.encode())
-        mes = input("-> ")
-else:
-    s.connect((host,port))
-    arr = ("client_2","reg", "1025")
-    s.send(pickle.dumps(arr))
+    print("Ready for chat!")
+    
+    while True:
+        mes = input()#"-> "
+        s.send(encrypting(mes.encode(), key))
+    rT.join()
+
+def client_reciving(ip, port):
+    key = "paymerespect"
+    s = socket.socket() 
+    s.connect(('SE.RV.ER.IP', 54320))
+    name = input("Enter your name: ")
+    s.send(pickle.dumps((name,"reg", str(port))))
     s.close()
     
+    print("Waiting connection")
+    
     s = socket.socket()
-    s.bind(("192.168.1.49", 1025))
+    s.bind((ip, port))
     s.listen(10)
     c, addr = s.accept()
-    print ('Got connection from', addr) 
     
-    rT = threading.Thread(target=receving, args=("RecvThread",c))
+    rT = threading.Thread(target=receving, args=(key, c))
     rT.start()
+    
+    print("Ready for chat!")
 
-    mes = input("-> ")
-    while mes != "Quite":
-        c.send(mes.encode())
-        mes = input("-> ")
+    while True:
+        mes = input()#"-> "
+        c.send(encrypting(mes.encode(), key))
     rT.join()
     c.close()
+
+def via_node(ip, port):
+    key = "paymerespect"
+    s = socket.socket()
+	
+    s.connect((ip, port))
+    name = input("Enter your name: ")
+    s.send(name.encode())
+    geted, addr = s.recvfrom(1024)
+    print(geted.decode())
+    geted, addr = s.recvfrom(1024)
+    print(geted.decode())
+    
+    rT = threading.Thread(target=receving, args=(key, s))
+    rT.start()
+    
+    while True:
+        mes = input()#"-> "
+        s.send(encrypting(mes.encode(), key))
+    rT.join()
+
+for ifaceName in interfaces():
+	addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr':'No IP addr'}] )]
+	if "192.168.1" in ', '.join(addresses):
+		ip = ', '.join(addresses)
+
+way = input("Connecting (1) / reciving (2) / via node (3): ")
+if way == '1':
+    client_connecting(ip, 1024)
+elif way == '2':
+    client_reciving(ip, 1024)
+else:
+	node_ip = input("Enter node ip: ")
+	via_node(node_ip, 1024)
 s.close()
