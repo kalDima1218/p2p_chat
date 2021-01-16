@@ -5,13 +5,13 @@ from netifaces import interfaces, ifaddresses, AF_INET
 
 tLock = threading.Lock()
 def receving(sock_my, sock_connector):
-    data = ' '
-    try:
-        while True and data != '':
-            data, addr = sock_connector.recvfrom(1024)
-            sock_my.send(data)
-    except:
-        pass
+	data = ' '
+	try:
+		while True and data != '':
+			data, addr = sock_connector.recvfrom(1024)
+			sock_my.send(data)
+	except:
+		pass
 
 def redirect (ip, in_port, out_port):
 	s1 = socket.socket()

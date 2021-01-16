@@ -3,25 +3,31 @@ import pickle
 
 s = socket.socket()
 
-host = 'SE.RV.ER.IP'
+host = '46.229.212.108'
 port = 54320
 
 s.bind((host, port)) 
 s.listen(10)
 
 users = {}
+nodes = []
 
 while True: 
-    c, addr = s.accept()
-    print ('Got connection from', addr) 
-    mes = pickle.loads(c.recv(1024))
-    if str(mes[1]) == "reg":
-        users[mes[0]] = (addr[0], int(mes[2]))
-    elif str(mes[1]) == "get":
-        try:
-            c.send(pickle.dumps(users[mes[0]]))
-        except:
-            pass
-    elif mes == "stun":
-        c.send(addr[0].encode())
-    c.close()
+	c, addr = s.accept()
+	print ('Got connection from', addr) 
+	data = c.recv(1024)
+	mes = pickle.loads(data)
+	if mes[1] == "reg":
+		users[mes[0]] = (addr[0], int(mes[2]))
+	elif mes[1] == "get":
+		try:
+			c.send(pickle.dumps(users[mes[0]]))
+		except:
+			pass
+	elif mes == "stun":
+		c.send(addr[0].encode())
+	elif mes == "reg_node" and addr[0] not in nodes:
+		nodes.append(addr[0])
+	else:
+		c.send(data)
+	c.close()
