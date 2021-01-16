@@ -3,7 +3,7 @@ import pickle
 
 s = socket.socket()
 
-host = '46.229.212.108'
+host = 'IP.AD.RE.SS'
 port = 54320
 
 s.bind((host, port)) 
