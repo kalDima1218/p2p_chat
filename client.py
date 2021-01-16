@@ -17,13 +17,13 @@ def receving(key, sock):
 def client_connecting(ip, port):
 	key = "paymerespect"
 	s = socket.socket() 
-	s.connect(('46.229.212.108', 54320))
+	s.connect(('IP.AD.RE.SS', 54320))
 	name = input("Enter your name: ")
 	s.send(pickle.dumps((name, "reg", str(port))))
 	s.close()
 	
 	s = socket.socket() 
-	s.connect(('46.229.212.108', 54320))
+	s.connect(('IP.AD.RE.SS', 54320))
 	client = input("Enter client name: ")
 	s.send(pickle.dumps((client, "get")))
 	geted, addr = s.recvfrom(1024)
@@ -50,7 +50,7 @@ def client_connecting(ip, port):
 def client_reciving(ip, port):
 	key = "paymerespect"
 	s = socket.socket() 
-	s.connect(('46.229.212.108', 54320))
+	s.connect(('IP.AD.RE.SS', 54320))
 	name = input("Enter your name: ")
 	s.send(pickle.dumps((name,"reg", str(port))))
 	s.close()
