@@ -3,7 +3,7 @@ import pickle
 
 s = socket.socket()
 
-host = 'IP.AD.RE.SS'
+host = '46.229.212.108'
 port = 54320
 
 s.bind((host, port)) 
@@ -28,6 +28,4 @@ while True:
 		c.send(addr[0].encode())
 	elif mes == "reg_node" and addr[0] not in nodes:
 		nodes.append(addr[0])
-	else:
-		c.send(data)
 	c.close()
