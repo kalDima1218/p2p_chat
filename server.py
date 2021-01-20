@@ -3,10 +3,9 @@ import pickle
 
 s = socket.socket()
 
-host = '46.229.212.108'
-port = 54320
+white_server = ('46.229.212.108', 54320) #My server. You can use it for demo. Paste here your server ip to get MUCH SECURE
 
-s.bind((host, port)) 
+s.bind(white_server) 
 s.listen(10)
 
 users = {}
@@ -28,4 +27,6 @@ while True:
 		c.send(addr[0].encode())
 	elif mes == "reg_node" and addr[0] not in nodes:
 		nodes.append(addr[0])
+	elif mes == "get_nodes":
+		c.send(pickle.dumps(nodes))
 	c.close()

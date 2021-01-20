@@ -1,3 +1,14 @@
+"""Tham module provides encrypting/decrypting according AES(128) standart. 
+Based on Rijndael algorithm, AES uses 4 transformation for encrypting: SubSytes(), ShiftRows(),
+MixColumns() and AddRoundKey(). For decrypting it uses inverse functions of that fout.
+Detales you can read here:
+http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
+or here:
+http://en.wikipedia.org/wiki/Advanced_Encryption_Standard
+or here:
+http://www.cs.bc.edu/~straubin/cs381-05/blockciphers/rijndael_ingles2004.swf
+or somewhere else.
+"""
 import time
 
 nb = 4  # number of coloumn of State (for AES = 4)
@@ -385,16 +396,16 @@ def decrypting(data, key):
 			decrypted_data.extend(crypted_part)
 
 	# Ounput data
-	return bytes(decrypted_data).decode("utf-8")
+	return bytes(decrypted_data).decode()
 
 
 
-#way = 2
-#key = 'paymerespect'
+#way = 2 # 1 - encrypt; 2 - decrypt
+#key = 'paymerespect' # Up to 16 digit
 
 #time_before = time.time()
 
-#data = b'o"t_\x14q\x97F\x8b\x0e\xcd\x03\x0cG\xa2\xc7'
+#data = b'Ox\xa6\xbdg*\xf1\x0f\xc7[_,W\xa4.\xb7' # Byte code: b'Hello World!' ('Hello World!'.encrypt()) or b'Ox\xa6\xbdg*\xf1\x0f\xc7[_,W\xa4.\xb7'
 
 #if way == 1:
 #	print(encrypting(data, key))

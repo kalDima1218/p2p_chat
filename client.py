@@ -4,30 +4,33 @@ import pickle
 from aes import encrypting, decrypting
 from netifaces import interfaces, ifaddresses, AF_INET
 
-tLock = threading.Lock()
+white_server = ('46.229.212.108', 54320) #My server. You can use it for demo. Paste here your server ip to get MUCH SECURE
+
 def receving(key, sock):
-	data = ' '
 	try:
-		while data != '' and data != b'q':
+		while 1:
 			data, addr = sock.recvfrom(1024)
 			print ('New message: '+ decrypting(data, key))
 	except:
 		pass
 
 def client_connecting(ip, port):
+	global white_server
 	key = "paymerespect"
+	
 	s = socket.socket() 
-	s.connect(('IP.AD.RE.SS', 54320))
+	s.connect(white_server)
 	name = input("Enter your name: ")
 	s.send(pickle.dumps((name, "reg", str(port))))
 	s.close()
 	
 	s = socket.socket() 
-	s.connect(('IP.AD.RE.SS', 54320))
+	s.connect(white_server)
 	client = input("Enter client name: ")
 	s.send(pickle.dumps((client, "get")))
 	geted, addr = s.recvfrom(1024)
 	con = pickle.loads(geted)
+	print(con)
 	s.close()
 	
 	s = socket.socket() 
@@ -43,14 +46,15 @@ def client_connecting(ip, port):
 		s.send(encrypting(mes.encode(), key))
 		mes = input()#"-> "
 	s.send(mes.encode())
-	rT.join()
 	s.close()
 	print("Canceled")
 
 def client_reciving(ip, port):
+	global white_server
 	key = "paymerespect"
+	
 	s = socket.socket() 
-	s.connect(('IP.AD.RE.SS', 54320))
+	s.connect(white_server)
 	name = input("Enter your name: ")
 	s.send(pickle.dumps((name,"reg", str(port))))
 	s.close()
@@ -72,15 +76,15 @@ def client_reciving(ip, port):
 		s.send(encrypting(mes.encode(), key))
 		mes = input()#"-> "
 	s.send(mes.encode())
-	rT.join()
 	s.close()
 	c.close()
 	print("Canceled")
 
 def via_node(ip, port):
+	global white_server
 	key = "paymerespect"
-	s = socket.socket()
 	
+	s = socket.socket()
 	s.connect((ip, port))
 	name = input("Enter your name: ")
 	s.send(name.encode())
@@ -97,7 +101,6 @@ def via_node(ip, port):
 		s.send(encrypting(mes.encode(), key))
 		mes = input()#"-> "
 	s.send(mes.encode())
-	rT.join()
 	s.close()
 	print("Canceled")
 
@@ -112,5 +115,15 @@ if way == '1':
 elif way == '2':
 	client_reciving(ip, 1024)
 else:
-	node_ip = input("Enter node ip: ")
-	via_node(node_ip, 1024)
+	s = socket.socket() 
+	s.connect(white_server)
+	s.send(pickle.dumps(("get_nodes")))
+	data, addr = s.recvfrom(1024)
+	nodes = pickle.loads(data)
+	s.close()
+	
+	for n, i in enumerate(nodes, start=1):
+		print(str(n) + ":", i)
+	
+	node = input("Enter node number: ")
+	via_node(nodes[int(node)-1], 1024)
