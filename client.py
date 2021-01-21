@@ -10,7 +10,7 @@ def receving(key, sock):
 	try:
 		while 1:
 			data, addr = sock.recvfrom(1024)
-			print ('New message: '+ decrypting(data, key))
+			print ('New message: '+ data)
 	except:
 		pass
 
