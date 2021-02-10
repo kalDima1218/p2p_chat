@@ -5,16 +5,16 @@ from netifaces import interfaces, ifaddresses, AF_INET
 
 white_server = ('46.229.212.108', 54320) #My server. You can use it for demo. Paste here your server ip to get MUCH SECURE
 
-def receving(sock_my, sock_connector):
+def receving(c1, c2):
     data = ' '
     try:
         while data != '' and data != b'q':
-            data, addr = sock_connector.recvfrom(1024)
-            sock_my.send(data)
+            data, addr = c1.recvfrom(1024)
+            c2.send(data)
     except:
         pass
-    sock_my.close()
-    sock_connector.close()
+    c1.close()
+    c2.close()
 
 def redirect (ip, in_port, out_port):
 	global white_server
@@ -27,34 +27,37 @@ def redirect (ip, in_port, out_port):
 	s2.listen(10)
 	
 	while True:
-		c1, addr = s1.accept()
-		data, addr = c1.recvfrom(1024)
-		name = data.decode()
-		
-		print("Started")
-	
 		s = socket.socket() 
 		s.connect(white_server)
-		s.send(pickle.dumps((name,"reg", str(out_port))))
+		s.send(pickle.dumps(("reg_node", in_port)))
 		s.close()
-	
-		c1.send("Waiting connection".encode())
-
+		
+		c1, addr = s1.accept()
+		data, addr = c1.recvfrom(1024)
+		name1 = data.decode()
+		print("One")
+		
+		s = socket.socket() 
+		s.connect(white_server)
+		s.send(pickle.dumps(("reg_node", out_port)))
+		s.close()
+		
 		c2, addr = s2.accept()
+		data, addr = c2.recvfrom(1024)
+		name2 = data.decode()
+		print("Two")
+		
+		c1.send((name2 + " joined the chat!").encode())
+		c2.send((name1 + " joined the chat!").encode())
 	
-		rT = threading.Thread(target=receving, args=(c1, c2))
-		rT.start()
-	
-		c1.send("Ready for chat!".encode())
-
-		data = ' '
-		try:
-			while data != '' and data != b'q':
-				data, addr = c1.recvfrom(1024)
-				c2.send(data)
-		except:
-			pass
-		rT.join()
+		rT1 = threading.Thread(target=receving, args=(c1, c2))
+		rT1.start()
+		
+		rT2 = threading.Thread(target=receving, args=(c2, c1))
+		rT2.start()
+		
+		rT1.join()
+		rT2.join()
 		c1.close()
 		c2.close()
 		print("Canceled")
@@ -76,10 +79,5 @@ for ifaceName in interfaces():
 	addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr':'No IP addr'}] )]
 	if "192.168.1" in ', '.join(addresses):
 		ip = ', '.join(addresses)
-
-s = socket.socket() 
-s.connect(white_server)
-s.send(pickle.dumps(("reg_node")))
-s.close()
 
 redirect(ip, port, port*2)

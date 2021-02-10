@@ -9,7 +9,7 @@ s.bind(white_server)
 s.listen(10)
 
 users = {}
-nodes = []
+nodes = {}
 
 while True: 
 	c, addr = s.accept()
@@ -25,8 +25,8 @@ while True:
 			pass
 	elif mes == "stun":
 		c.send(addr[0].encode())
-	elif mes == "reg_node" and addr[0] not in nodes:
-		nodes.append(addr[0])
+	elif mes[0] == "reg_node":
+		nodes[addr[0]] = mes[1]
 	elif mes == "get_nodes":
 		c.send(pickle.dumps(nodes))
 	c.close()

@@ -10,7 +10,7 @@ def receving(key, sock):
 	try:
 		while 1:
 			data, addr = sock.recvfrom(1024)
-			print ('New message: '+ data)
+			print ('New message: '+ decrypting(data, key))
 	except:
 		pass
 
@@ -88,8 +88,7 @@ def via_node(ip, port):
 	s.connect((ip, port))
 	name = input("Enter your name: ")
 	s.send(name.encode())
-	geted, addr = s.recvfrom(1024)
-	print(geted.decode())
+	
 	geted, addr = s.recvfrom(1024)
 	print(geted.decode())
 	
@@ -121,9 +120,7 @@ else:
 	data, addr = s.recvfrom(1024)
 	nodes = pickle.loads(data)
 	s.close()
+	print(nodes)
 	
-	for n, i in enumerate(nodes, start=1):
-		print(str(n) + ":", i)
-	
-	node = input("Enter node number: ")
-	via_node(nodes[int(node)-1], 1024)
+	node = input("Enter node ip: ")
+	via_node(node, nodes[node])

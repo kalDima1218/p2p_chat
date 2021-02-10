@@ -22,7 +22,7 @@ def redirect (ip, in_port, out_port):
 	name = data.decode()
 	
 	s = socket.socket() 
-	s.connect(('IP.AD.RE.SS', 54320))
+	s.connect(('46.229.212.108', 54320))
 	s.send(pickle.dumps((name,"reg", str(out_port))))
 	s.close()
 	
