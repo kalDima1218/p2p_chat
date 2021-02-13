@@ -120,7 +120,15 @@ else:
 	data, addr = s.recvfrom(1024)
 	nodes = pickle.loads(data)
 	s.close()
-	print(nodes)
 	
-	node = input("Enter node ip: ")
-	via_node(node, nodes[node])
+	ips = []
+	ports = []
+	for n, i in enumerate(nodes.keys(), start=1):
+		print(str(n) + ":", i)
+		ips.append(i)
+		
+	for i in nodes.values():
+		ports.append(i)
+
+	node = int(input("Enter node number: "))
+	via_node(ips[node-1], ports[node-1])
