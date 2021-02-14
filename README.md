@@ -8,6 +8,7 @@ Now I'm using AES 128, maybe I'm improve security later.
 - So secure
 - Very anonymously
 - Much private
+- Working with gsm (mobile internet) too!
 - DESIGNED AND CODED IN RUSSIA(🇷🇺)
 ## TODO
 - Mobile app (Android)
