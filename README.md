@@ -22,13 +22,13 @@ Now I'm using AES 128, maybe I'm improve security later.
 ## Run
 ### If you have atleast 1 opened port
 1. server.py
-2. client.py 2
-3. client.py 1
-### Else
+2. client.py >2
+3. client.py >1
+### Else (if you using node)
 1. server.py
 2. single_node.py or node.py
-3. client.py 3
-4. client.py 1
+3. client.py >3
+4. client.py >3
 ## About node
 Node is retranslator witch have alteast 1 opened port. It will help you if you can't open port or if you use mobile internet. About scripts: node.py using all ports, single_node.py using 1 port.
 ## License, etc
