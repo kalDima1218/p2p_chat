@@ -14,6 +14,7 @@ Now I'm using AES 128, maybe I'm improve security later.
 - Mobile app (Android)
 - QT interface (Maybe or not)
 - Full node (Now working only single_node)
+- Complex encryption (rsa + aes) for more security
 ## Preparing for usage
 1. Network Address Translation rules (NAT) You need to redirect ports. Atleast you need opened port.
 2. Computure with "while" ip (static ip)
