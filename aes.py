@@ -150,7 +150,7 @@ def sub_bytes(state, inv=False):
 			   True - decryption-transformation
 	"""
 
-	if inv == False:  # encrypt
+	if inv is False:  # encrypt
 		box = sbox
 	else:  # decrypt
 		box = inv_sbox
@@ -178,7 +178,7 @@ def shift_rows(state, inv=False):
 
 	count = 1
 
-	if inv == False:  # encrypting
+	if inv is False:  # encrypting
 		for i in range(1, nb):
 			state[i] = left_shift(state[i], count)
 			count += 1
@@ -201,7 +201,7 @@ def mix_columns(state, inv=False):
 
 	for i in range(nb):
 
-		if inv == False:  # encryption
+		if inv is False:  # encryption
 			s0 = mul_by_02(state[0][i]) ^ mul_by_03(state[1][i]) ^ state[2][i] ^ state[3][i]
 			s1 = state[0][i] ^ mul_by_02(state[1][i]) ^ mul_by_03(state[2][i]) ^ state[3][i]
 			s2 = state[0][i] ^ state[1][i] ^ mul_by_02(state[2][i]) ^ mul_by_03(state[3][i])
