@@ -9,7 +9,6 @@ or here:
 http://www.cs.bc.edu/~straubin/cs381-05/blockciphers/rijndael_ingles2004.swf
 or somewhere else.
 """
-import time
 
 nb = 4  # number of coloumn of State (for AES = 4)
 nr = 10  # number of rounds ib ciper cycle (if nb = 4 nr = 10)
